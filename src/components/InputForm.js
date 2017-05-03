@@ -22,6 +22,7 @@ class InputForm extends Component {
   }
 
   handleSubmit = e => {
+    e && e.preventDefault();
 
     this.props.dispatch(actions.setJournalEntries(utils.parseCSV(this.state.journal)));
     this.props.dispatch(actions.setAccounts(utils.parseCSV(this.state.accounts)));
