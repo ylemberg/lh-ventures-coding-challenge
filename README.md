@@ -1,7 +1,7 @@
 # LH Ventures Coding Challenge
 
 
-Your task is to finish the redux selector function to a program to help an accountant to get balances from accounting journals.
+Your task is to finish the redux mapStateToProps function to a program to help an accountant to get balances from accounting journals.
 
 ## Getting started
 
@@ -38,7 +38,7 @@ This user request must output all accounts from accounts starting with "2000" to
 
 ## Challenge
 
-It's your job to parse the journals and accounts to create the balance data set. This code should go into the selector function at the bottom of the BalanceOutput component. The BalanceOutput component expects balance to be an array of objects with the keys ACCOUNT, DESCRIPTION, DEBIT, CREDIT, and BALANCE.
+Parsing input fields and storing in Redux has already been implemented; it's up to you to filter the journals and accounts to create the balance data set. This code should go into the selector function at the bottom of the BalanceOutput component. The BalanceOutput component expects balance to be an array of objects with the keys ACCOUNT, DESCRIPTION, DEBIT, CREDIT, and BALANCE.
 
 
 ## Post challenge
