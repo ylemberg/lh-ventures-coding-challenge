@@ -25,7 +25,7 @@ AAA is the starting account (* means first account of source file), BBB is the e
 
 This user request must output all accounts from acounts starting with "1000" to accounts starting with "5000", from period MAR-16 to JUL-16. Output should be formatted as an HTML table.
 
-    ![1000 5000 MAR-16 JUL-16 HTML](/example-1.png)
+![1000 5000 MAR-16 JUL-16 HTML](/example-1.png)
 
 
 
@@ -33,7 +33,7 @@ This user request must output all accounts from acounts starting with "1000" to 
 
 This user request must output all accounts from accounts starting with "2000" to last account from source file, from first periof of file to MAY-16. Output should be formatted as CSV.
 
-    ![2000 * * MAY-16 CSV](/example-2.png)
+![2000 * * MAY-16 CSV](/example-2.png)
 
 
 ## Challenge
