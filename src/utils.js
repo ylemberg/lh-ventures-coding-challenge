@@ -60,3 +60,17 @@ export const parseUserInput = str => {
 export const sortByAccount = (balanceA, balanceB) => balanceA.ACCOUNT - balanceB.ACCOUNT
 
 export const sortBalanceArr = balance => balance.sort(sortByAccount)
+
+export const generateAccountsObj = accounts => {
+  const accountsObj = {}
+
+  accounts.forEach(account => {
+    accountsObj[account.ACCOUNT] = account.LABEL
+  });
+
+  return accountsObj
+}
+
+export const getBalance = (debit, credit) => debit - credit
+
+export const getDescription = description => description || 'n/a'

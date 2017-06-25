@@ -79,19 +79,17 @@ export default connect(state => {
   let balance = [];
 
   /* YOUR CODE GOES HERE */
-  const accounts = {};
-  state.accounts.forEach(account => {
-    accounts[account.ACCOUNT] = account.LABEL
-  });
+  const accounts = utils.generateAccountsObj(state.accounts);
 
   state.journalEntries.forEach(journalEntry => {
-    balance.push({
+    const balanceObj = {
       ACCOUNT: journalEntry.ACCOUNT,
       DEBIT: journalEntry.DEBIT,
       CREDIT: journalEntry.CREDIT,
-      BALANCE: journalEntry.DEBIT - journalEntry.CREDIT,
-      DESCRIPTION: accounts[journalEntry.ACCOUNT] || 'n/a'
-    });
+      BALANCE: utils.getBalance(journalEntry.DEBIT, journalEntry.CREDIT),
+      DESCRIPTION: utils.getDescription(accounts[journalEntry.ACCOUNT])
+    };
+    balance.push(balanceObj);
   })
 
   const totalCredit = balance.reduce((acc, entry) => acc + entry.CREDIT, 0);
