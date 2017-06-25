@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import * as parseUtils from '../utils/parseUtils';
-import * as balanceArrUtils from '../utils/balanceArrUtils';
+import * as balanceUtils from '../utils/balanceUtils';
 
 class BalanceOutput extends Component {
   render() {
@@ -79,18 +79,21 @@ BalanceOutput.propTypes = {
 export default connect(state => {
   /* YOUR CODE GOES HERE */
   const { accounts, journalEntries, userInput } = state
-  const accountsObj = balanceArrUtils.generateAccountsObj(accounts);
-  const journalEntriesByDate = balanceArrUtils.filterJournalEntriesByDate(journalEntries, userInput)
-  let balance = balanceArrUtils.getBalanceArr(journalEntriesByDate, accountsObj)
-  balance = balanceArrUtils.filterJournalEntriesByAccount(balance, userInput)
+
+  const accountsObj = balanceUtils.generateAccountsObj(accounts);
+  const journalEntriesByDate = balanceUtils.filterJournalEntriesByDate(journalEntries, userInput)
+
+  const balance = balanceUtils.getBalanceArr(journalEntriesByDate, accountsObj)
+  const balanceFilteredByAccount = balanceUtils.filterJournalEntriesByAccount(balance, userInput)
+  const sortedBalance = balanceUtils.sortBalanceArr(balanceFilteredByAccount)
 
   const totalCredit = balance.reduce((acc, entry) => acc + entry.CREDIT, 0);
   const totalDebit = balance.reduce((acc, entry) => acc + entry.DEBIT, 0);
 
   return {
-    balance: balanceArrUtils.sortBalanceArr(balance),
+    balance: sortedBalance,
     totalCredit,
     totalDebit,
-    userInput: state.userInput
+    userInput
   };
 })(BalanceOutput);
