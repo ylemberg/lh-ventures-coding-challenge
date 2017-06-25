@@ -79,10 +79,10 @@ export default connect(state => {
   let balance = [];
 
   /* YOUR CODE GOES HERE */
-  const accounts = {}
+  const accounts = {};
   state.accounts.forEach(account => {
     accounts[account.ACCOUNT] = account.LABEL
-  })
+  });
 
   state.journalEntries.forEach(journalEntry => {
     balance.push({
@@ -91,16 +91,14 @@ export default connect(state => {
       CREDIT: journalEntry.CREDIT,
       BALANCE: journalEntry.DEBIT - journalEntry.CREDIT,
       DESCRIPTION: accounts[journalEntry.ACCOUNT] || 'n/a'
-    })
+    });
   })
-
-  balance = balance.sort((balanceA, balanceB) => balanceA.ACCOUNT - balanceB.ACCOUNT)
 
   const totalCredit = balance.reduce((acc, entry) => acc + entry.CREDIT, 0);
   const totalDebit = balance.reduce((acc, entry) => acc + entry.DEBIT, 0);
 
   return {
-    balance,
+    balance: utils.sortBalanceArr(balance),
     totalCredit,
     totalDebit,
     userInput: state.userInput

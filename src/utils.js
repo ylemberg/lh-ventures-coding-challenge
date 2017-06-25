@@ -56,3 +56,7 @@ export const parseUserInput = str => {
     format
   };
 }
+
+export const sortByAccount = (balanceA, balanceB) => balanceA.ACCOUNT - balanceB.ACCOUNT
+
+export const sortBalanceArr = balance => balance.sort(sortByAccount)
