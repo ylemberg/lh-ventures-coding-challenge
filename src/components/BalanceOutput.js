@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as utils from '../utils';
+import * as parseUtils from '../utils/parseUtils';
+import * as balanceArrUtils from '../utils/balanceArrUtils';
 
 class BalanceOutput extends Component {
   render() {
@@ -18,12 +19,12 @@ class BalanceOutput extends Component {
           {' '}
           to {this.props.userInput.endAccount || '*'}
           {' '}
-          from period {utils.dateToString(this.props.userInput.startPeriod)}
+          from period {parseUtils.dateToString(this.props.userInput.startPeriod)}
           {' '}
-          to {utils.dateToString(this.props.userInput.endPeriod)}
+          to {parseUtils.dateToString(this.props.userInput.endPeriod)}
         </p>
         {this.props.userInput.format === 'CSV' ? (
-          <pre>{utils.toCSV(this.props.balance)}</pre>
+          <pre>{parseUtils.toCSV(this.props.balance)}</pre>
         ) : null}
         {this.props.userInput.format === 'HTML' ? (
           <table className="table">
@@ -77,26 +78,15 @@ BalanceOutput.propTypes = {
 
 export default connect(state => {
   /* YOUR CODE GOES HERE */
-  const accounts = utils.generateAccountsObj(state.accounts);
-
-  const balance = state.journalEntries.reduce((balance, journalEntry) => {
-    const description = accounts[journalEntry.ACCOUNT]
-    const idx = utils.indexOfAccountInArr(balance, journalEntry.ACCOUNT)
-    if (idx === -1) {
-      const newBalanceEntry = utils.getNewBalanceEntry(journalEntry, description)
-      balance.push(utils.getNewBalanceEntry(journalEntry, description))
-    } else {
-      balance[idx] = utils.addEntryToAccount(balance[idx], journalEntry)
-    }
-
-    return balance
-  }, [])
+  const accounts = balanceArrUtils.generateAccountsObj(state.accounts);
+  let balance = balanceArrUtils.getBalanceArr(state.journalEntries, accounts)
+  balance = balanceArrUtils.filterBalanceArr(balance, state.userInput)
 
   const totalCredit = balance.reduce((acc, entry) => acc + entry.CREDIT, 0);
   const totalDebit = balance.reduce((acc, entry) => acc + entry.DEBIT, 0);
 
   return {
-    balance: utils.sortBalanceArr(balance),
+    balance: balanceArrUtils.sortBalanceArr(balance),
     totalCredit,
     totalDebit,
     userInput: state.userInput

@@ -57,41 +57,4 @@ export const parseUserInput = str => {
   };
 }
 
-export const sortByAccount = (balanceA, balanceB) => balanceA.ACCOUNT - balanceB.ACCOUNT
-
-export const sortBalanceArr = balance => balance.sort(sortByAccount)
-
-export const generateAccountsObj = accounts => {
-  const accountsObj = {}
-
-  accounts.forEach(account => {
-    accountsObj[account.ACCOUNT] = account.LABEL
-  });
-
-  return accountsObj
-}
-
-export const getBalance = (debit, credit) => debit - credit
-
 export const parseDescription = description => description || 'N/A'
-
-export const indexOfAccountInArr = (balanceArr, accountNum) => balanceArr.findIndex(balanceObj => balanceObj.ACCOUNT === accountNum)
-
-export const addEntryToAccount = (originalEntries, newEntry) => {
-  originalEntries.DEBIT += newEntry.DEBIT;
-  originalEntries.CREDIT += newEntry.CREDIT;
-  originalEntries.BALANCE = getBalance(originalEntries.DEBIT, originalEntries.CREDIT);
-  return originalEntries;
-}
-
-export const getNewBalanceEntry = (entry, description) => {
-  const balanceVal = getBalance(entry.DEBIT, entry.CREDIT);
-  const parsedDescription = parseDescription(description);
-  return {
-    ACCOUNT: entry.ACCOUNT,
-    DEBIT: entry.DEBIT,
-    CREDIT: entry.CREDIT,
-    BALANCE: balanceVal,
-    DESCRIPTION: parsedDescription
-  };
-}

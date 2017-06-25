@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { accounts, journal } from '../data';
 import * as actions from '../actions';
-import * as utils from '../utils';
+import * as parseUtils from '../utils/parseUtils';
 
 class InputForm extends Component {
   state = {
@@ -24,9 +24,9 @@ class InputForm extends Component {
   handleSubmit = e => {
     e && e.preventDefault();
 
-    this.props.dispatch(actions.setJournalEntries(utils.parseCSV(this.state.journal)));
-    this.props.dispatch(actions.setAccounts(utils.parseCSV(this.state.accounts)));
-    this.props.dispatch(actions.setUserInput(utils.parseUserInput(this.state.userInput)));
+    this.props.dispatch(actions.setJournalEntries(parseUtils.parseCSV(this.state.journal)));
+    this.props.dispatch(actions.setAccounts(parseUtils.parseCSV(this.state.accounts)));
+    this.props.dispatch(actions.setUserInput(parseUtils.parseUserInput(this.state.userInput)));
   }
 
   render() {
