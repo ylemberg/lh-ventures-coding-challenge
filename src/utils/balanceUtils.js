@@ -23,7 +23,7 @@ export const addEntryToAccount = (originalEntries, newEntry) => {
   originalEntries.DEBIT += newEntry.DEBIT;
   originalEntries.CREDIT += newEntry.CREDIT;
   originalEntries.BALANCE = getBalanceVal(originalEntries.DEBIT, originalEntries.CREDIT);
-  return originalEntries;
+  return { ...originalEntries };
 }
 
 export const getDateOfEntry = date => {
@@ -33,13 +33,13 @@ export const getDateOfEntry = date => {
   }
 }
 
-export const getNewBalanceEntry = (entry, description) => {
-  const balanceVal = getBalanceVal(entry.DEBIT, entry.CREDIT);
+export const getNewBalanceEntry = ({ ACCOUNT, DEBIT, CREDIT }, description) => {
+  const balanceVal = getBalanceVal(DEBIT, CREDIT);
   const parsedDescription = parseUtils.parseDescription(description);
   return {
-    ACCOUNT: entry.ACCOUNT,
-    DEBIT: entry.DEBIT,
-    CREDIT: entry.CREDIT,
+    ACCOUNT,
+    DEBIT,
+    CREDIT,
     BALANCE: balanceVal,
     DESCRIPTION: parsedDescription
   };
@@ -56,11 +56,11 @@ export const getBalanceArr = (journalEntries, accounts) => {
       balance[idx] = addEntryToAccount(balance[idx], journalEntry);
     }
 
-    return balance;
+    return [ ...balance ];
   }, [])
 }
 
-export const filterJournalEntriesByAccount = (arr, { startAccount, endAccount }) =>
+export const filterJournalEntriesByAccount = (arr, startAccount, endAccount) =>
   arr.filter(entry => entry.ACCOUNT >= startAccount && entry.ACCOUNT <= endAccount)
 
 export const dateInRange = (entryMonth, entryYear, start, end) => {
@@ -79,10 +79,12 @@ export const filterJournalEntriesByDate = (entries, { startPeriod, endPeriod }) 
   if (startPeriod && endPeriod) {
     const startDate = getDateOfEntry(startPeriod);
     const endDate = getDateOfEntry(endPeriod);
+
     return entries.filter(entry => {
       const { month, year } = getDateOfEntry(entry.PERIOD);
       return dateInRange(month, year, startDate, endDate);
     })
   }
-  return entries
+
+  return [ ...entries ]
 }

@@ -83,7 +83,7 @@ export default connect(state => {
   const accountsObj = balanceUtils.generateAccountsObj(accounts);
   const journalEntriesByDate = balanceUtils.filterJournalEntriesByDate(journalEntries, userInput);
   const balance = balanceUtils.getBalanceArr(journalEntriesByDate, accountsObj);
-  const balanceFilteredByAccount = balanceUtils.filterJournalEntriesByAccount(balance, userInput);
+  const balanceFilteredByAccount = balanceUtils.filterJournalEntriesByAccount(balance, userInput.startAccount, userInput.endAccount);
   const sortedBalance = balanceUtils.sortBalanceArr(balanceFilteredByAccount);
 
   const totalCredit = balance.reduce((acc, entry) => acc + entry.CREDIT, 0);
