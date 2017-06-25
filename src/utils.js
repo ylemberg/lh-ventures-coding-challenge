@@ -76,3 +76,10 @@ export const getBalance = (debit, credit) => debit - credit
 export const parseDescription = description => description || 'N/A'
 
 export const indexOfAccountInArr = (balanceArr, accountNum) => balanceArr.findIndex(balanceObj => balanceObj.ACCOUNT === accountNum)
+
+export const addEntryToAccount = (originalEntries, newEntry) => {
+  originalEntries.DEBIT += newEntry.DEBIT
+  originalEntries.CREDIT += newEntry.CREDIT
+  originalEntries.BALANCE = getBalance(originalEntries.DEBIT, originalEntries.CREDIT);
+  return originalEntries
+}

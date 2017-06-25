@@ -76,29 +76,26 @@ BalanceOutput.propTypes = {
 };
 
 export default connect(state => {
-  let balance = [];
-
   /* YOUR CODE GOES HERE */
   const accounts = utils.generateAccountsObj(state.accounts);
 
-  state.journalEntries.forEach(journalEntry => {
+  const balance = state.journalEntries.reduce((balance, journalEntry) => {
     const description = accounts[journalEntry.ACCOUNT]
-    const balanceObj = {
-      ACCOUNT: journalEntry.ACCOUNT,
-      DEBIT: journalEntry.DEBIT,
-      CREDIT: journalEntry.CREDIT,
-      BALANCE: utils.getBalance(journalEntry.DEBIT, journalEntry.CREDIT),
-      DESCRIPTION: utils.parseDescription(description)
-    };
     const idx = utils.indexOfAccountInArr(balance, journalEntry.ACCOUNT)
     if (idx !== -1) {
-      balance[idx].DEBIT += balanceObj.DEBIT
-      balance[idx].CREDIT += balanceObj.CREDIT
-      balance[idx].BALANCE = utils.getBalance(balance[idx].DEBIT, balance[idx].CREDIT)
+      balance[idx] = utils.addEntryToAccount(balance[idx], journalEntry)
     } else {
-      balance.push(balanceObj);
+      balance.push({
+        ACCOUNT: journalEntry.ACCOUNT,
+        DEBIT: journalEntry.DEBIT,
+        CREDIT: journalEntry.CREDIT,
+        BALANCE: utils.getBalance(journalEntry.DEBIT, journalEntry.CREDIT),
+        DESCRIPTION: utils.parseDescription(description)
+      });
     }
-  })
+
+    return balance
+  }, [])
 
   const totalCredit = balance.reduce((acc, entry) => acc + entry.CREDIT, 0);
   const totalDebit = balance.reduce((acc, entry) => acc + entry.DEBIT, 0);
