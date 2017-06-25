@@ -82,7 +82,7 @@ export default connect(state => {
 
   const accountsObj = balanceUtils.generateAccountsObj(accounts);
   const journalEntriesByDate = balanceUtils.filterJournalEntriesByDate(journalEntries, userInput)
-
+  console.log('journalEntriesByDate', journalEntriesByDate.map(entry => balanceUtils.getDateOfEntry(entry.PERIOD)))
   const balance = balanceUtils.getBalanceArr(journalEntriesByDate, accountsObj)
   const balanceFilteredByAccount = balanceUtils.filterJournalEntriesByAccount(balance, userInput)
   const sortedBalance = balanceUtils.sortBalanceArr(balanceFilteredByAccount)

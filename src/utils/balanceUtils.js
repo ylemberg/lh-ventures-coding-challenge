@@ -26,25 +26,23 @@ export const addEntryToAccount = (originalEntries, newEntry) => {
   return originalEntries;
 }
 
-export const getDateOfEntry = entry => {
+export const getDateOfEntry = date => {
   return {
-    month: entry.PERIOD.getMonth(),
-    year: entry.PERIOD.getFullYear()
+    month: date.getMonth(),
+    year: date.getFullYear()
   }
 }
 
 export const getNewBalanceEntry = (entry, description) => {
   const balanceVal = getBalanceVal(entry.DEBIT, entry.CREDIT);
   const parsedDescription = parseUtils.parseDescription(description);
-  const { month, year } = getDateOfEntry(entry)
+  // const { month, year } = getDateOfEntry(entry.PERIOD)
   return {
     ACCOUNT: entry.ACCOUNT,
     DEBIT: entry.DEBIT,
     CREDIT: entry.CREDIT,
     BALANCE: balanceVal,
-    DESCRIPTION: parsedDescription,
-    MONTH: month,
-    YEAR: year
+    DESCRIPTION: parsedDescription
   };
 }
 
@@ -66,6 +64,27 @@ export const getBalanceArr = (journalEntries, accounts) => {
 export const filterJournalEntriesByAccount = (arr, { startAccount, endAccount }) =>
   arr.filter(entry => entry.ACCOUNT >= startAccount && entry.ACCOUNT <= endAccount)
 
-export const filterJournalEntriesByDate = (entries, { PERIOD }) => {
+export const dateInRange = (entryMonth, entryYear, start, end) => {
+  if (entryYear < start.year || entryYear > end.year) {
+    return false
+  } else if (start.year === end.year) {
+    return entryMonth >= start.month && entryMonth <= end.month
+  } else if (start.year !== end.year && entryYear === start.year) {
+    return entryMonth >= start.month
+  } else if (start.year !== end.year && entryYear === end.year) {
+    return entryMonth <= end.month
+  }
+  return true
+}
+
+export const filterJournalEntriesByDate = (entries, { startPeriod, endPeriod }) => {
+  if (startPeriod && endPeriod) {
+    const startDate = getDateOfEntry(startPeriod)
+    const endDate = getDateOfEntry(endPeriod)
+    return entries.filter(entry => {
+      const { month, year } = getDateOfEntry(entry.PERIOD)
+      return dateInRange(month, year, startDate, endDate)
+    })
+  }
   return entries
 }
