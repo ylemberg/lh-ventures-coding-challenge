@@ -26,19 +26,25 @@ export const addEntryToAccount = (originalEntries, newEntry) => {
   return originalEntries;
 }
 
+export const getDateOfEntry = entry => {
+  return {
+    month: entry.PERIOD.getMonth(),
+    year: entry.PERIOD.getFullYear()
+  }
+}
+
 export const getNewBalanceEntry = (entry, description) => {
-  console.log('entry.PERIOD', entry.PERIOD)
-  console.log('entry.PERIOD.getMonth()', entry.PERIOD.getMonth())
-  console.log('entry.PERIOD.getDate()', entry.PERIOD.getDate())
-  console.log('')
   const balanceVal = getBalanceVal(entry.DEBIT, entry.CREDIT);
   const parsedDescription = parseUtils.parseDescription(description);
+  const { month, year } = getDateOfEntry(entry)
   return {
     ACCOUNT: entry.ACCOUNT,
     DEBIT: entry.DEBIT,
     CREDIT: entry.CREDIT,
     BALANCE: balanceVal,
-    DESCRIPTION: parsedDescription
+    DESCRIPTION: parsedDescription,
+    MONTH: month,
+    YEAR: year
   };
 }
 
