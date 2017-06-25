@@ -82,16 +82,11 @@ export default connect(state => {
   const balance = state.journalEntries.reduce((balance, journalEntry) => {
     const description = accounts[journalEntry.ACCOUNT]
     const idx = utils.indexOfAccountInArr(balance, journalEntry.ACCOUNT)
-    if (idx !== -1) {
-      balance[idx] = utils.addEntryToAccount(balance[idx], journalEntry)
+    if (idx === -1) {
+      const newBalanceEntry = utils.getNewBalanceEntry(journalEntry, description)
+      balance.push(utils.getNewBalanceEntry(journalEntry, description))
     } else {
-      balance.push({
-        ACCOUNT: journalEntry.ACCOUNT,
-        DEBIT: journalEntry.DEBIT,
-        CREDIT: journalEntry.CREDIT,
-        BALANCE: utils.getBalance(journalEntry.DEBIT, journalEntry.CREDIT),
-        DESCRIPTION: utils.parseDescription(description)
-      });
+      balance[idx] = utils.addEntryToAccount(balance[idx], journalEntry)
     }
 
     return balance
