@@ -73,4 +73,6 @@ export const generateAccountsObj = accounts => {
 
 export const getBalance = (debit, credit) => debit - credit
 
-export const getDescription = description => description || 'n/a'
+export const parseDescription = description => description || 'n/a'
+
+export const indexOfAccountInArr = (balanceArr, accountNum) => balanceArr.findIndex(balanceObj => balanceObj.ACCOUNT === accountNum)
