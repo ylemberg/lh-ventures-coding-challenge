@@ -27,6 +27,10 @@ export const addEntryToAccount = (originalEntries, newEntry) => {
 }
 
 export const getNewBalanceEntry = (entry, description) => {
+  console.log('entry.PERIOD', entry.PERIOD)
+  console.log('entry.PERIOD.getMonth()', entry.PERIOD.getMonth())
+  console.log('entry.PERIOD.getDate()', entry.PERIOD.getDate())
+  console.log('')
   const balanceVal = getBalanceVal(entry.DEBIT, entry.CREDIT);
   const parsedDescription = parseUtils.parseDescription(description);
   return {
@@ -53,17 +57,9 @@ export const getBalanceArr = (journalEntries, accounts) => {
   }, [])
 }
 
-export const filterByAccount = (start, end, arr) => arr.filter(entry => entry.ACCOUNT >= start && entry.ACCOUNT <= end)
+export const filterJournalEntriesByAccount = (arr, { startAccount, endAccount }) =>
+  arr.filter(entry => entry.ACCOUNT >= startAccount && entry.ACCOUNT <= endAccount)
 
-export const filterByPeriod = (start, end, arr) => {
-  console.log('start', start)
-  console.log('end', end)
-  console.log('arr', arr)
-  return arr
-}
-
-export const filterBalanceArr = (balance, { startAccount, endAccount, startPeriod, endPeriod }) => {
-  balance = filterByAccount(startAccount, endAccount, balance)
-  balance = filterByPeriod(startPeriod, endPeriod, balance)
-  return balance
+export const filterJournalEntriesByDate = (entries, { PERIOD }) => {
+  return entries
 }

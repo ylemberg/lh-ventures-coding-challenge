@@ -78,9 +78,11 @@ BalanceOutput.propTypes = {
 
 export default connect(state => {
   /* YOUR CODE GOES HERE */
-  const accounts = balanceArrUtils.generateAccountsObj(state.accounts);
-  let balance = balanceArrUtils.getBalanceArr(state.journalEntries, accounts)
-  balance = balanceArrUtils.filterBalanceArr(balance, state.userInput)
+  const { accounts, journalEntries, userInput } = state
+  const accountsObj = balanceArrUtils.generateAccountsObj(accounts);
+  const journalEntriesByDate = balanceArrUtils.filterJournalEntriesByDate(journalEntries, userInput)
+  let balance = balanceArrUtils.getBalanceArr(journalEntriesByDate, accountsObj)
+  balance = balanceArrUtils.filterJournalEntriesByAccount(balance, userInput)
 
   const totalCredit = balance.reduce((acc, entry) => acc + entry.CREDIT, 0);
   const totalDebit = balance.reduce((acc, entry) => acc + entry.DEBIT, 0);
