@@ -36,7 +36,6 @@ export const getDateOfEntry = date => {
 export const getNewBalanceEntry = (entry, description) => {
   const balanceVal = getBalanceVal(entry.DEBIT, entry.CREDIT);
   const parsedDescription = parseUtils.parseDescription(description);
-  // const { month, year } = getDateOfEntry(entry.PERIOD)
   return {
     ACCOUNT: entry.ACCOUNT,
     DEBIT: entry.DEBIT,
@@ -65,25 +64,24 @@ export const filterJournalEntriesByAccount = (arr, { startAccount, endAccount })
   arr.filter(entry => entry.ACCOUNT >= startAccount && entry.ACCOUNT <= endAccount)
 
 export const dateInRange = (entryMonth, entryYear, start, end) => {
-  if (entryYear < start.year || entryYear > end.year) {
-    return false
-  } else if (start.year === end.year) {
-    return entryMonth >= start.month && entryMonth <= end.month
-  } else if (start.year !== end.year && entryYear === start.year) {
-    return entryMonth >= start.month
-  } else if (start.year !== end.year && entryYear === end.year) {
-    return entryMonth <= end.month
+  if (start.year === end.year && entryYear === start.year) {
+    return entryMonth >= start.month && entryMonth <= end.month;
+  } else if (entryYear === start.year) {
+    return entryMonth >= start.month;
+  } else if (entryYear === end.year) {
+    return entryMonth <= end.month;
   }
-  return true
+
+  return entryYear >= start.year && entryYear <= end.year;
 }
 
 export const filterJournalEntriesByDate = (entries, { startPeriod, endPeriod }) => {
   if (startPeriod && endPeriod) {
-    const startDate = getDateOfEntry(startPeriod)
-    const endDate = getDateOfEntry(endPeriod)
+    const startDate = getDateOfEntry(startPeriod);
+    const endDate = getDateOfEntry(endPeriod);
     return entries.filter(entry => {
-      const { month, year } = getDateOfEntry(entry.PERIOD)
-      return dateInRange(month, year, startDate, endDate)
+      const { month, year } = getDateOfEntry(entry.PERIOD);
+      return dateInRange(month, year, startDate, endDate);
     })
   }
   return entries
