@@ -26,12 +26,10 @@ export const addEntryToAccount = (originalEntries, newEntry) => {
   return { ...originalEntries };
 }
 
-export const getDateOfEntry = date => {
-  return {
-    month: date.getMonth(),
-    year: date.getFullYear()
-  }
-}
+export const getDateOfEntry = date => ({
+  month: date.getMonth(),
+  year: date.getFullYear()
+})
 
 export const getNewBalanceEntry = ({ ACCOUNT, DEBIT, CREDIT }, description) => {
   const balanceVal = getBalanceVal(DEBIT, CREDIT);
